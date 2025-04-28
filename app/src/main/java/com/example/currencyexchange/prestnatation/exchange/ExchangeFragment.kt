@@ -81,6 +81,7 @@ class ExchangeFragment : Fragment() {
                     sourceRate = currency.rate
                     sourceSymbol = currency.symbol
                     sourceCode = currency.code
+                    clearInput()
                     updateConversion()
                 }
             }

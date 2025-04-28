@@ -13,7 +13,7 @@ import com.example.currencyexchange.R
 import com.example.currencyexchange.databinding.ItemCurrencyCardBinding
 import com.example.currencyexchange.prestnatation.exchange.model.CurrencyInfo
 
-class SourceViewPager() :
+class SourceViewPager :
     ListAdapter<CurrencyInfo, SourceViewPager.CurrencyViewHolder>(DiffCallback()) {
 
     private var targetRate: Double = 0.0
@@ -36,9 +36,14 @@ class SourceViewPager() :
                 etAmount.removeTextChangedListener(it)
             }
 
-            etAmount.setText(
-                if (sourceAmount == null || sourceAmount == 0.0) "" else sourceAmount.toString()
-            )
+            val newAmountText = if (sourceAmount == null || sourceAmount == 0.0) ""
+            else if (sourceAmount!! % 1.0 == 0.0) sourceAmount!!.toInt().toString()
+            else sourceAmount!!.toString()
+
+            if (etAmount.text.toString() != newAmountText) {
+                etAmount.setText(newAmountText)
+                etAmount.setSelection(newAmountText.length)
+            }
 
             textWatcher = object : TextWatcher {
                 override fun beforeTextChanged(charSequence: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -102,4 +107,3 @@ class SourceViewPager() :
         private const val PAYLOAD_RATE_UPDATE = "rate_update"
     }
 }
-
